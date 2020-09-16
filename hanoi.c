@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-void hanoi(int n, char A, char B, char C)；
+void hanoi(int n, char A, char B, char C);
 int main()
 {
     hanoi(2, 'A', 'B', 'C');
