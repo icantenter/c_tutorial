@@ -1,35 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
-static int main_ret = 0;
-static int test_count = 0;
-static int test_pass = 0;
 
-
-#define EXPECT_EQ_BASE(equality, expect, actual, format) \
-    do {\
-        test_count++;\
-        if (equality)\
-            test_pass++;\
-        else {\
-            fprintf(stderr, "%s:%d: expect: " format " actual: " format "\n", __FILE__, __LINE__, expect, actual);\
-            main_ret = 1;\
-        }\
-    } while(0)
-
-#define EXPECT_EQ_INT(expect, actual) EXPECT_EQ_BASE((expect) == (actual), expect, actual, "%d")
+#include "unit_test.h"
+#include "Status.h"
 
 typedef int ElemType;
 
-enum Status
-{
-    OK = 1,
-    TRUE = 2,
-    FALSE = 0,
-    ERROR = 0,
-    OVERFLOW = 0,
-
-};
 typedef struct DuLNode
 {
     ElemType data;
@@ -83,9 +60,9 @@ enum Status ListEmpty(DuLinkList L)
 
 /*计算表内元素个数*/
 int ListLength(DuLinkList L) //注释3
-{ /* 初始条件：L已存在。操作结果： */
+{                            /* 初始条件：L已存在。操作结果： */
     int i = 0;
-    DuLinkList p = L->next;  /* p指向第一个结点 */
+    DuLinkList p = L->next; /* p指向第一个结点 */
 
     while (p != L) /* p没到表头 */
     {
@@ -96,10 +73,10 @@ int ListLength(DuLinkList L) //注释3
 }
 //赋值：
 enum Status GetElem(DuLinkList L, int i, ElemType *e)
-{              
+{
     /* 当第i个元素存在时，其值赋给e并返回OK，否则返回ERROR */
-    int cur = 1; 
-    DuLinkList p = L->next; 
+    int cur = 1;
+    DuLinkList p = L->next;
 
     while (p != L && cur < i)
     {
@@ -173,8 +150,8 @@ enum Status NextElem(DuLinkList L, ElemType cur_e, ElemType *next_e)
     return FALSE;
 }
 //查找元素地址：
-DuLinkList GetElemP(DuLinkList L, int i) 
-{   
+DuLinkList GetElemP(DuLinkList L, int i)
+{
     /* 在双向链表L中返回第i个元素的地址。i为0，返回头结点的地址。若第i个元素不存在，*/
     /* 返回NULL */
     int j;

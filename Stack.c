@@ -1,36 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "unit_test.h"
+#include "Status.h"
 #define STACK_INIT_SIZE 1000
 #define STACKINCREMENT 10
-
-static int main_ret = 0;
-static int test_count = 0;
-static int test_pass = 0;
-
-#define EXPECT_EQ_BASE(equality, expect, actual, format)                                                           \
-    do                                                                                                             \
-    {                                                                                                              \
-        test_count++;                                                                                              \
-        if (equality)                                                                                              \
-            test_pass++;                                                                                           \
-        else                                                                                                       \
-        {                                                                                                          \
-            fprintf(stderr, "%s:%d: expect: " format " actual: " format "\n", __FILE__, __LINE__, expect, actual); \
-            main_ret = 1;                                                                                          \
-        }                                                                                                          \
-    } while (0)
-
-#define EXPECT_EQ_INT(expect, actual) EXPECT_EQ_BASE((expect) == (actual), expect, actual, "%d")
-
-enum Status
-{
-    OK = 1,
-    TRUE = 2,
-    FALSE = 0,
-    ERROR = 0,
-    OVERFLOW = 0,
-
-};
 
 typedef int SElemType;
 struct Stack
@@ -41,14 +14,12 @@ struct Stack
 };
 typedef struct Stack Stack;
 
-
-
 enum Status StackTraverse(Stack *MyStack, enum Status (*visit)(SElemType))
 {
     return OK;
 }
 
-int StackLength(Stack* MyStack)
+int StackLength(Stack *MyStack)
 {
     return MyStack->top - MyStack->base;
 }
@@ -59,7 +30,7 @@ Stack *InitStack(size_t cap)
     MyStack->base = (SElemType *)malloc(sizeof(SElemType) * cap);
     MyStack->top = MyStack->base;
     MyStack->size = cap;
-   return MyStack;
+    return MyStack;
 }
 
 enum Status StackEmpty(Stack *MyStack)
@@ -75,8 +46,7 @@ enum Status push(Stack *MyStack, const SElemType e)
 {
     if (MyStack->top - MyStack->base == MyStack->size)
     {
-        MyStack->base = (SElemType *)realloc(MyStack->base
-         , (MyStack->size + STACKINCREMENT) * sizeof(SElemType));
+        MyStack->base = (SElemType *)realloc(MyStack->base, (MyStack->size + STACKINCREMENT) * sizeof(SElemType));
         if (!MyStack->base)
         {
             exit(OVERFLOW);
